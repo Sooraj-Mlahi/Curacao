@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChatMessage, mockAIResponse } from "@/lib/mockData";
 import { cn } from "@/lib/utils";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function Chat() {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -118,7 +120,24 @@ export default function Chat() {
                         : "bg-white text-foreground rounded-tl-none border"
                     )}
                   >
-                    {msg.content}
+                    <div className="prose prose-sm prose-slate max-w-none dark:prose-invert prose-p:my-1 prose-headings:my-2 prose-strong:text-primary prose-a:text-primary prose-a:no-underline hover:prose-a:underline">
+                      <ReactMarkdown 
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          // Override specific elements for custom styling
+                          p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
+                          ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 space-y-1" {...props} />,
+                          ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 space-y-1" {...props} />,
+                          li: ({node, ...props}) => <li className="pl-1" {...props} />,
+                          h1: ({node, ...props}) => <h1 className="text-lg font-bold text-primary mb-2 mt-4 first:mt-0" {...props} />,
+                          h2: ({node, ...props}) => <h2 className="text-base font-bold text-primary mb-2 mt-3 first:mt-0" {...props} />,
+                          h3: ({node, ...props}) => <h3 className="text-sm font-bold text-primary mb-1 mt-2 first:mt-0" {...props} />,
+                          strong: ({node, ...props}) => <strong className="font-bold text-primary" {...props} />,
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    </div>
                   </div>
                 </div>
               ))}
