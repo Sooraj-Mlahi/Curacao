@@ -1,9 +1,8 @@
 import Layout from "@/components/Layout";
 import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Loader2, Sparkles } from "lucide-react";
+import { Send, Bot, User, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage, mockAIResponse } from "@/lib/mockData";
 import { cn } from "@/lib/utils";
 
@@ -23,7 +22,7 @@ export default function Chat() {
   // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isTyping]);
 
@@ -91,7 +90,7 @@ export default function Chat() {
           </div>
 
           {/* Chat Area */}
-          <ScrollArea className="flex-1 p-6 bg-slate-50/50">
+          <div className="flex-1 p-6 bg-slate-50/50 overflow-y-auto" ref={scrollRef}>
             <div className="flex flex-col gap-6">
               {messages.map((msg) => (
                 <div
@@ -136,9 +135,8 @@ export default function Chat() {
                   </div>
                 </div>
               )}
-              <div ref={scrollRef} />
             </div>
-          </ScrollArea>
+          </div>
 
           {/* Input Area */}
           <div className="p-4 bg-white border-t">
