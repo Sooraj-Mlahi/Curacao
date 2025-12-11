@@ -12,7 +12,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { href: "/", label: "Home", icon: TreePalm },
     { href: "/chat", label: "AI Assistant", icon: MessageCircle },
     { href: "/explore", label: "Explore", icon: Map },
-    { href: "/admin", label: "Admin", icon: Settings },
   ];
 
   return (

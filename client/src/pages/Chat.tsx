@@ -70,7 +70,7 @@ export default function Chat() {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8 max-w-4xl h-[calc(100vh-80px)] flex flex-col">
+      <div className="container mx-auto px-4 py-6 md:py-8 h-[calc(100dvh-100px)] flex flex-col">
         <div className="flex-1 bg-white rounded-3xl shadow-xl border border-border/50 overflow-hidden flex flex-col relative">
           
           {/* Header */}

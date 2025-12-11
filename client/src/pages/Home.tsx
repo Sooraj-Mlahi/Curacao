@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[85vh] flex items-center overflow-hidden pb-16">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
