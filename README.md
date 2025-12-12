@@ -1,28 +1,159 @@
-# Curaçao AI Travel Assistant Demo
+# Curaçao AI Travel Assistant
 
-This is a high-fidelity frontend demo for a Tourist AI Assistant for Curaçao.
-It showcases a modern, tropical-themed UI with an interactive AI chat simulation.
+A beautiful, AI-powered travel assistant for Curaçao. Built with React, TailwindCSS, Express, and OpenAI.
 
 ## Features
 
-- **Landing Page**: Immersive hero section with island imagery.
-- **AI Chat Assistant**: Fully functional chat interface (simulated AI) that answers questions about beaches, food, and itineraries.
-- **Explore**: Interactive grid of top Curaçao destinations with detailed modals.
-- **Admin Dashboard**: A preview of the admin interface to view user query analytics.
+- **AI Chat Assistant**: Real-time conversations powered by OpenAI GPT-4o
+- **Destination Explorer**: Interactive guide to top Curaçao locations
+- **Tropical Design**: Clean, modern UI inspired by the Caribbean
 
 ## Tech Stack
 
-- **Frontend**: React, TailwindCSS, Framer Motion
-- **Routing**: Wouter
-- **Icons**: Lucide React
-- **Fonts**: Outfit (Display) & DM Sans (Body)
+- **Frontend**: React 19, TailwindCSS, Wouter, Framer Motion
+- **Backend**: Node.js, Express
+- **AI**: OpenAI API (GPT-4o)
+- **Styling**: Radix UI components, Lucide icons
 
-## Setup
+---
 
-1.  Install dependencies: `npm install`
-2.  Run the development server: `npm run dev`
-3.  Open the preview URL.
+## Local Development Setup (Windows)
 
-## Note on AI
+### Prerequisites
 
-This demo uses a sophisticated client-side simulation for the AI chat to ensure reliability and speed without needing a backend connection. In a production environment, this would connect to the OpenAI API via the Node.js backend.
+1. **Node.js** (v18 or higher)
+   - Download from: https://nodejs.org/
+   - Verify installation: `node --version`
+
+2. **OpenAI API Key**
+   - Get one from: https://platform.openai.com/api-keys
+
+### Step 1: Clone or Download the Project
+
+```bash
+# If using git
+git clone <your-repo-url>
+cd curacao-ai-assistant
+
+# Or download and extract the ZIP file
+```
+
+### Step 2: Install Dependencies
+
+Open Command Prompt or PowerShell in the project folder:
+
+```bash
+npm install
+```
+
+### Step 3: Configure Environment Variables
+
+1. Copy the example environment file:
+   ```bash
+   copy .env.example .env
+   ```
+
+2. Open `.env` in a text editor (Notepad, VS Code, etc.)
+
+3. Replace the placeholder with your actual OpenAI API key:
+   ```
+   OPENAI_API_KEY=sk-your-actual-api-key-here
+   ```
+
+### Step 4: Run the Application
+
+**Option A: Using the cross-platform script (Recommended)**
+```bash
+npm run dev
+```
+
+**Option B: If Option A doesn't work on Windows**
+```bash
+set NODE_ENV=development && npx tsx server/index.ts
+```
+
+### Step 5: Open in Browser
+
+Once the server starts, open your browser and go to:
+```
+http://localhost:5000
+```
+
+---
+
+## Project Structure
+
+```
+├── client/                 # Frontend React application
+│   ├── src/
+│   │   ├── components/     # Reusable UI components
+│   │   ├── pages/          # Page components (Home, Chat, Explore)
+│   │   └── lib/            # Utilities and helpers
+│   └── index.html
+├── server/                 # Backend Express server
+│   ├── index.ts            # Server entry point
+│   └── routes.ts           # API routes (including /api/chat)
+├── shared/                 # Shared types and schemas
+├── .env.example            # Environment variables template
+└── package.json
+```
+
+---
+
+## API Endpoints
+
+### POST /api/chat
+
+Send a message to the AI assistant.
+
+**Request Body:**
+```json
+{
+  "message": "What are the best beaches in Curaçao?",
+  "history": []  // Optional: previous messages for context
+}
+```
+
+**Response:**
+```json
+{
+  "response": "Bon bini! Curaçao has amazing beaches..."
+}
+```
+
+---
+
+## Troubleshooting
+
+### "OPENAI_API_KEY is not set"
+- Make sure you created a `.env` file (not `.env.example`)
+- Make sure the API key is correct and has no extra spaces
+
+### "Port 5000 already in use"
+- Close any other applications using port 5000
+- Or change the PORT in `.env`: `PORT=3000`
+
+### "cross-env is not recognized" (Windows)
+Use the alternative command:
+```bash
+set NODE_ENV=development && npx tsx server/index.ts
+```
+
+### Slow AI responses
+- This is normal - OpenAI API calls take 2-5 seconds
+- The typing indicator shows while waiting
+
+---
+
+## Building for Production
+
+```bash
+npm run build
+npm start
+```
+
+---
+
+## License
+
+MIT License - Built for demonstration purposes.
