@@ -2,9 +2,10 @@ import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowRight, MessageCircle, Map, Sun } from "lucide-react";
-import heroImage from "@assets/generated_images/curaçao_hero_image.png";
-import blueBayImage from "@assets/generated_images/blue_bay_curaçao.png";
-import willemstadImage from "@assets/generated_images/willemstad_city_center.png";
+
+const heroImage = "/assets/curaçao_hero_image.png";
+const blueBayImage = "/assets/blue_bay_curaçao.png";
+const willemstadImage = "/assets/willemstad_city_center.png";
 
 export default function Home() {
   return (
