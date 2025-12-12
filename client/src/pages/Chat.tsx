@@ -3,10 +3,16 @@ import { useState, useRef, useEffect } from "react";
 import { Send, Bot, User, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChatMessage, mockAIResponse } from "@/lib/mockData";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+
+interface ChatMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  timestamp: Date;
+}
 
 export default function Chat() {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -39,24 +45,41 @@ export default function Chat() {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMsg]);
+    const currentMessages = [...messages, userMsg];
+    setMessages(currentMessages);
     setInputValue("");
     setIsTyping(true);
 
-    // Call Mock AI
+    // Call real OpenAI API via backend
     try {
-      const responseText = await mockAIResponse(userMsg.content);
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: userMsg.content,
+          history: currentMessages.map(m => ({ role: m.role, content: m.content })),
+        }),
+      });
+
+      const data = await response.json();
       
       const aiMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: responseText,
+        content: data.response || data.fallback || "I apologize, but I couldn't process that. Please try again!",
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, aiMsg]);
     } catch (error) {
       console.error("AI Error", error);
+      const errorMsg: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "Bon bini! I'm having a little trouble connecting right now. Please try again in a moment!",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMsg]);
     } finally {
       setIsTyping(false);
     }
@@ -114,7 +137,7 @@ export default function Chat() {
                   </div>
                   <div
                     className={cn(
-                      "rounded-2xl px-5 py-3 shadow-sm text-sm md:text-base leading-relaxed whitespace-pre-wrap",
+                      "rounded-2xl px-5 py-3 shadow-sm text-sm md:text-base leading-relaxed",
                       msg.role === "user"
                         ? "bg-secondary text-secondary-foreground rounded-tr-none"
                         : "bg-white text-foreground rounded-tl-none border"
@@ -124,7 +147,6 @@ export default function Chat() {
                       <ReactMarkdown 
                         remarkPlugins={[remarkGfm]}
                         components={{
-                          // Override specific elements for custom styling
                           p: ({node, ...props}) => <p className="mb-2 last:mb-0" {...props} />,
                           ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-2 space-y-1" {...props} />,
                           ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-2 space-y-1" {...props} />,
@@ -166,7 +188,6 @@ export default function Chat() {
                     key={s}
                     onClick={() => {
                       setInputValue(s);
-                      // Optional: auto-send
                     }}
                     className="flex-shrink-0 px-4 py-2 bg-secondary/10 hover:bg-secondary/20 text-secondary-foreground text-xs md:text-sm rounded-full border border-secondary/20 transition-colors whitespace-nowrap"
                   >
