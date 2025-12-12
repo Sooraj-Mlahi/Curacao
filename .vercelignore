@@ -3,5 +3,5 @@ node_modules
 *.log
 *.tsbuildinfo
 client/dist
-attached_assets/generated_images
+# attached_assets/generated_images
 .env
